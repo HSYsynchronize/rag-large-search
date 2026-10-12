@@ -1,12 +1,17 @@
 """
 faiss_store.py - FAISS 向量存储
 
-用 FAISS 的 IVF 索引替代 NumPy 暴力检索。
+用 FAISS 的 ANN 索引替代 NumPy 暴力检索。
 核心区别：FAISS 用 ANN（近似最近邻）算法，不全量遍历，大数据量下快得多。
 
 索引类型选择：
-- IndexFlatIP: 精确检索（和 NumPy 一样慢，作为对照基线）
-- IndexIVFFlat: 近似检索（先聚类再搜索，牺牲少量精度换大幅提速）
+- IndexFlatIP:   精确检索（全量遍历，作为对照基线与精度标尺）
+- IndexIVFFlat:  聚类式近似检索（先聚类再搜索，牺牲精度换速度）
+- IndexHNSWFlat: 图式近似检索（速度与精度兼得，代价是内存占用）
+
+IVF 与 HNSW 的取舍（本项目的核心对比）：
+- IVF 靠"只扫一部分聚类"降低计算量 → 快，但命中率随 nprobe 减小而下降
+- HNSW 靠"在邻近图上贪心跳转" → 快且准，但每个向量要额外维护 M 条邻居边，更吃内存
 """
 
 import json
@@ -20,17 +25,27 @@ import config
 from .vector_store import ConversationEntry
 
 
+# ---- HNSW 参数 ----
+# M：每个节点的邻居连接数。内存占用的主要来源，越大越准也越吃内存（常用 16-64）
+HNSW_M = 32
+# efConstruction：构建索引时的搜索宽度。越大索引质量越高、构建越慢（仅构建时生效）
+HNSW_EF_CONSTRUCTION = 200
+# efSearch：查询时的搜索宽度。越大越准越慢（运行时可调，是 HNSW 的精度/速度旋钮）
+HNSW_EF_SEARCH = 64
+
+
 class FaissVectorStore:
-    """FAISS 向量存储：支持精确检索和近似检索两种模式"""
+    """FAISS 向量存储：支持精确检索与三种索引模式"""
 
     def __init__(self, path: str = None, mode: str = "flat"):
         """
         mode:
-          "flat" → IndexFlatIP，精确检索（和 NumPy 一样的全量遍历，作为对照）
-          "ivf"  → IndexIVFFlat，近似检索（ANN，大数据量下快）
+          "flat" → IndexFlatIP，精确检索（全量遍历，对照基线）
+          "ivf"  → IndexIVFFlat，聚类式近似检索
+          "hnsw" → IndexHNSWFlat，图式近似检索
         """
         self.path = path or os.path.join(
-            os.path.dirname(__file__), "..", "data", "faiss_store.json"
+            os.path.dirname(__file__), "..", "data", f"faiss_store_{mode}.json"
         )
         self.mode = mode
         self.entries: list[ConversationEntry] = []
@@ -67,12 +82,40 @@ class FaissVectorStore:
             self._index.add(vectors)
             # 搜 12.5% 的聚类：大规模下这才是 IVF 的意义
             self._index.nprobe = max(nlist // 8, 4)
+        elif self.mode == "hnsw":
+            # HNSW 索引：构建分层邻近图，查询时在图上贪心逼近
+            # 与 IVF 的关键差别：HNSW 不需要 train（无聚类步骤），但建图更耗时
+            # 同样必须显式指定 METRIC_INNER_PRODUCT，理由同 IVF（默认是 L2）
+            self._index = faiss.IndexHNSWFlat(self._dim, HNSW_M,
+                                              faiss.METRIC_INNER_PRODUCT)
+            self._index.hnsw.efConstruction = HNSW_EF_CONSTRUCTION
+            self._index.add(vectors)  # 直接 add，不需要 train
+            self._index.hnsw.efSearch = HNSW_EF_SEARCH
         else:
             # Flat 索引：精确检索，全量遍历
             self._index = faiss.IndexFlatIP(self._dim)
             self._index.add(vectors)
 
         self.persist()
+
+    def set_ef_search(self, ef: int):
+        """调整 HNSW 查询宽度（精度/速度旋钮），仅 hnsw 模式有效"""
+        if self.mode == "hnsw" and self._index is not None:
+            self._index.hnsw.efSearch = ef
+
+    def index_size_bytes(self) -> int:
+        """索引序列化后的字节数，用于对比各索引的内存/存储开销"""
+        if self._index is None:
+            return 0
+        import tempfile
+        tmp = os.path.join(tempfile.gettempdir(), f"_faiss_size_{id(self)}.idx")
+        try:
+            faiss.write_index(self._index, tmp)
+            size = os.path.getsize(tmp)
+        finally:
+            if os.path.exists(tmp):
+                os.remove(tmp)
+        return size
 
     def search(self, query_vec: list[float], top_k: int = 5,
                threshold: float = None,
