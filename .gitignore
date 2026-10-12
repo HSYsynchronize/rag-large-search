@@ -1,0 +1,19 @@
+# ---- 敏感配置（绝对不要提交）----
+.env
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# ---- 生成的数据与索引（体积大，可由脚本重新生成）----
+data/
+
+# ---- 编辑器 / 系统 ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
