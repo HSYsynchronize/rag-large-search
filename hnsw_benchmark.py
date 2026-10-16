@@ -167,8 +167,12 @@ def main():
     print(f"  Flat : 构建 {t_flat:.2f}s")
 
     ivf, t_ivf = build_ivf(vectors)
-    print(f"  IVF  : 构建 {t_ivf:.2f}s (nlist={ivf.nlist}, nprobe={ivf.nprobe}, "
-          f"扫描 {ivf.nprobe / ivf.nlist * 100:.1f}% 聚类)")
+    # 快照 IVF 默认参数：后面的 nprobe 扫描会改写 ivf.nprobe，
+    # 若直接在落盘时读活对象，记录下来的会是扫描的最后一个值（曾经的真实 bug）。
+    ivf_nlist_default = int(ivf.nlist)
+    ivf_nprobe_default = int(ivf.nprobe)
+    print(f"  IVF  : 构建 {t_ivf:.2f}s (nlist={ivf_nlist_default}, nprobe={ivf_nprobe_default}, "
+          f"扫描 {ivf_nprobe_default / ivf_nlist_default * 100:.1f}% 聚类)")
 
     hnsw, t_hnsw = build_hnsw(vectors)
     print(f"  HNSW : 构建 {t_hnsw:.2f}s (M={HNSW_M}, efConstruction={HNSW_EF_CONSTRUCTION}, "
@@ -298,7 +302,7 @@ def main():
         "repeats": REPEATS,
         "hnsw_params": {"M": HNSW_M, "efConstruction": HNSW_EF_CONSTRUCTION,
                         "efSearch": HNSW_EF_SEARCH},
-        "ivf_params": {"nlist": int(ivf.nlist), "nprobe": int(ivf.nprobe)},
+        "ivf_params": {"nlist": ivf_nlist_default, "nprobe": ivf_nprobe_default},
         "results": results,
         "hnsw_efSearch_sweep": hnsw_sweep,
         "hnsw_M_sweep": hnsw_m_sweep,
