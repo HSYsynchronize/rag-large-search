@@ -1,0 +1,145 @@
+{
+  "dataset": {
+    "n": 16634,
+    "dim": 1024
+  },
+  "n_queries": 200,
+  "top_k": 10,
+  "seed": 42,
+  "repeats": 5,
+  "hnsw_params": {
+    "M": 32,
+    "efConstruction": 200,
+    "efSearch": 64
+  },
+  "ivf_params": {
+    "nlist": 166,
+    "nprobe": 64
+  },
+  "results": [
+    {
+      "engine": "Flat (精确)",
+      "build_s": 0.02,
+      "size_mb": 64.98,
+      "mean_ms": 5.844,
+      "p50_ms": 5.841,
+      "p95_ms": 6.506,
+      "recall@10": 1.0
+    },
+    {
+      "engine": "IVF (近似)",
+      "build_s": 0.43,
+      "size_mb": 65.75,
+      "mean_ms": 0.626,
+      "p50_ms": 0.607,
+      "p95_ms": 0.904,
+      "recall@10": 0.992
+    },
+    {
+      "engine": "HNSW (近似)",
+      "build_s": 3.38,
+      "size_mb": 69.29,
+      "mean_ms": 0.127,
+      "p50_ms": 0.116,
+      "p95_ms": 0.232,
+      "recall@10": 0.988
+    }
+  ],
+  "hnsw_efSearch_sweep": [
+    {
+      "efSearch": 16,
+      "mean_ms": 0.046,
+      "recall@10": 0.9875
+    },
+    {
+      "efSearch": 32,
+      "mean_ms": 0.069,
+      "recall@10": 0.989
+    },
+    {
+      "efSearch": 64,
+      "mean_ms": 0.129,
+      "recall@10": 0.988
+    },
+    {
+      "efSearch": 128,
+      "mean_ms": 0.259,
+      "recall@10": 0.988
+    },
+    {
+      "efSearch": 256,
+      "mean_ms": 0.547,
+      "recall@10": 0.988
+    }
+  ],
+  "hnsw_M_sweep": [
+    {
+      "M": 8,
+      "build_s": 2.48,
+      "size_mb": 66.26,
+      "recall@10": 0.988
+    },
+    {
+      "M": 16,
+      "build_s": 2.81,
+      "size_mb": 67.26,
+      "recall@10": 0.988
+    },
+    {
+      "M": 32,
+      "build_s": 2.98,
+      "size_mb": 69.29,
+      "recall@10": 0.988
+    },
+    {
+      "M": 64,
+      "build_s": 3.07,
+      "size_mb": 73.36,
+      "recall@10": 0.9895
+    }
+  ],
+  "ivf_nprobe_sweep": [
+    {
+      "nprobe": 1,
+      "scan_ratio": 0.006,
+      "mean_ms": 0.049,
+      "recall@10": 0.8945
+    },
+    {
+      "nprobe": 2,
+      "scan_ratio": 0.012,
+      "mean_ms": 0.069,
+      "recall@10": 0.9455
+    },
+    {
+      "nprobe": 4,
+      "scan_ratio": 0.0241,
+      "mean_ms": 0.114,
+      "recall@10": 0.9755
+    },
+    {
+      "nprobe": 8,
+      "scan_ratio": 0.0482,
+      "mean_ms": 0.224,
+      "recall@10": 0.9825
+    },
+    {
+      "nprobe": 16,
+      "scan_ratio": 0.0964,
+      "mean_ms": 0.471,
+      "recall@10": 0.9905
+    },
+    {
+      "nprobe": 32,
+      "scan_ratio": 0.1928,
+      "mean_ms": 0.953,
+      "recall@10": 0.9945
+    },
+    {
+      "nprobe": 64,
+      "scan_ratio": 0.3855,
+      "mean_ms": 1.862,
+      "recall@10": 0.9955
+    }
+  ]
+}

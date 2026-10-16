@@ -11,6 +11,14 @@ env/
 
 # ---- 生成的数据与索引（体积大，可由脚本重新生成）----
 data/
+# 例外：实验结论的原始证据，体积小（合计 <15KB），入库以便复核 README 结论
+!data/
+data/*
+!data/recall_diagnosis.json
+!data/attribution_result.json
+!data/duplication_control_result.json
+!data/semantic_dup_result.json
+!data/hnsw_benchmark_result.json
 
 # ---- 编辑器 / 系统 ----
 .vscode/

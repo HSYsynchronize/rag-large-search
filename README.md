@@ -492,20 +492,28 @@ rag-large-search/
 ├── diagnose_recall.py     # 诊断 1：判定召回损失是不是并列分数假象
 ├── attribution.py         # 诊断 2：逐一归因每个未命中位（A/B/C/D 分类）★ 核心
 ├── duplication_control.py # 诊断 3：重复率控制变量 + 零重复对照组 + IVF 固有误差
+├── semantic_dup_experiment.py # 诊断 4：语义重复（换种说法）实验
 ├── debug_ivf.py           # IVF 诊断（打印原始分数）
 ├── memory/
 │   ├── embeddings.py      # Embedding 客户端（OpenAI 兼容 API）
 │   ├── vector_store.py    # NumPy 向量存储（元数据 JSON + embedding .npy）
 │   └── faiss_store.py     # FAISS 向量存储（Flat + IVF + HNSW）
-└── data/                  # 生成的数据（已 gitignore，由脚本重建）
-    ├── conversations.json
-    ├── vector_store.json
-    ├── vector_store_embeddings.npy
-    ├── hnsw_benchmark_result.json
-    ├── recall_diagnosis.json
-    ├── attribution_result.json          # 新增
-    └── duplication_control_result.json  # 新增
+└── data/                  # 生成的数据
+    ├── conversations.json               # 已 gitignore（可由脚本重建）
+    ├── vector_store.json                # 已 gitignore
+    ├── vector_store_embeddings.npy      # 已 gitignore（68MB）
+    ├── hnsw_benchmark_result.json       # ✔ 入库
+    ├── recall_diagnosis.json            # ✔ 入库
+    ├── attribution_result.json          # ✔ 入库
+    ├── duplication_control_result.json  # ✔ 入库
+    └── semantic_dup_result.json         # ✔ 入库
 ```
+
+> **结果文件为什么入库**：这 5 个 JSON 合计不到 15KB，是本文所有结论的原始证据。
+> 重的数据文件（`.npy` 68MB、索引 69MB）仍被忽略、由脚本重建；
+> 但结论证据留着，读者才能不重跑就在仓库内复核。
+> 注意 `hnsw_benchmark_result.json` 里 `ivf_params.nprobe = 64` 是**已知的旧 bug 产物**，
+> 详见上文「踩坑记录」。
 
 ---
 

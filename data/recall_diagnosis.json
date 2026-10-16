@@ -1,0 +1,12 @@
+{
+  "total": 16634,
+  "unique_text": 14417,
+  "dup_items": 2217,
+  "dup_kinds": 1254,
+  "id_recall@10": 0.986,
+  "score_diff_top1": 1.1056661719521799e-07,
+  "score_diff_tail": 1.0013580009626821e-07,
+  "same_scores_diff_ids": 15,
+  "n_queries": 200,
+  "verdict": "tie_artifact"
+}

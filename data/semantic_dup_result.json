@@ -1,0 +1,187 @@
+{
+  "base_size": 6000,
+  "n_queries": 600,
+  "k": 10,
+  "seed": 42,
+  "similarity_baseline": {
+    "random_pair_mean": 0.45564359426498413,
+    "random_pair_p90": 0.5548365712165833,
+    "random_pair_p99": 0.6894501447677612
+  },
+  "experiment_a": [
+    {
+      "label": "baseline_self",
+      "cos": 1.0,
+      "rank_percentile": 0,
+      "engines": {
+        "Flat(精确)": {
+          "parent_recall@k": 1.0
+        },
+        "IVF": {
+          "parent_recall@k": 1.0
+        },
+        "HNSW": {
+          "parent_recall@k": 1.0
+        }
+      }
+    },
+    {
+      "label": "real_nn_rank_1",
+      "rank_percentile": 1,
+      "cos": 0.9003,
+      "engines": {
+        "Flat(精确)": {
+          "parent_recall@k": 0.9867,
+          "mean_rank": 3.08
+        },
+        "IVF": {
+          "parent_recall@k": 0.9833,
+          "mean_rank": 3.1
+        },
+        "HNSW": {
+          "parent_recall@k": 0.9867,
+          "mean_rank": 3.08
+        }
+      }
+    },
+    {
+      "label": "real_nn_rank_2",
+      "rank_percentile": 2,
+      "cos": 0.8734,
+      "engines": {
+        "Flat(精确)": {
+          "parent_recall@k": 0.955,
+          "mean_rank": 4.33
+        },
+        "IVF": {
+          "parent_recall@k": 0.945,
+          "mean_rank": 4.38
+        },
+        "HNSW": {
+          "parent_recall@k": 0.955,
+          "mean_rank": 4.33
+        }
+      }
+    },
+    {
+      "label": "real_nn_rank_5",
+      "rank_percentile": 5,
+      "cos": 0.8309,
+      "engines": {
+        "Flat(精确)": {
+          "parent_recall@k": 0.7983,
+          "mean_rank": 6.89
+        },
+        "IVF": {
+          "parent_recall@k": 0.7917,
+          "mean_rank": 6.89
+        },
+        "HNSW": {
+          "parent_recall@k": 0.7983,
+          "mean_rank": 6.89
+        }
+      }
+    },
+    {
+      "label": "real_nn_rank_10",
+      "rank_percentile": 10,
+      "cos": 0.7896,
+      "engines": {
+        "Flat(精确)": {
+          "parent_recall@k": 0.365,
+          "mean_rank": 9.69
+        },
+        "IVF": {
+          "parent_recall@k": 0.3667,
+          "mean_rank": 9.68
+        },
+        "HNSW": {
+          "parent_recall@k": 0.365,
+          "mean_rank": 9.69
+        }
+      }
+    },
+    {
+      "label": "real_nn_rank_20",
+      "rank_percentile": 20,
+      "cos": 0.7471,
+      "engines": {
+        "Flat(精确)": {
+          "parent_recall@k": 0.06,
+          "mean_rank": 10.86
+        },
+        "IVF": {
+          "parent_recall@k": 0.0583,
+          "mean_rank": 10.86
+        },
+        "HNSW": {
+          "parent_recall@k": 0.06,
+          "mean_rank": 10.86
+        }
+      }
+    },
+    {
+      "label": "real_nn_rank_50",
+      "rank_percentile": 50,
+      "cos": 0.6867,
+      "engines": {
+        "Flat(精确)": {
+          "parent_recall@k": 0.0017,
+          "mean_rank": 11.0
+        },
+        "IVF": {
+          "parent_recall@k": 0.0017,
+          "mean_rank": 11.0
+        },
+        "HNSW": {
+          "parent_recall@k": 0.0017,
+          "mean_rank": 11.0
+        }
+      }
+    }
+  ],
+  "experiment_b": [
+    {
+      "label": "single_version",
+      "library_size": 6000,
+      "engines": {
+        "Flat(精确)": {
+          "id_recall@k": 0.7183,
+          "group_recall@k": 0.7183,
+          "gap": 0.0
+        },
+        "IVF": {
+          "id_recall@k": 0.7133,
+          "group_recall@k": 0.7133,
+          "gap": 0.0
+        },
+        "HNSW": {
+          "id_recall@k": 0.72,
+          "group_recall@k": 0.72,
+          "gap": 0.0
+        }
+      }
+    },
+    {
+      "label": "multi_version",
+      "library_size": 6000,
+      "engines": {
+        "Flat(精确)": {
+          "id_recall@k": 0.955,
+          "group_recall@k": 1.0,
+          "gap": 0.045
+        },
+        "IVF": {
+          "id_recall@k": 0.945,
+          "group_recall@k": 1.0,
+          "gap": 0.055
+        },
+        "HNSW": {
+          "id_recall@k": 0.955,
+          "group_recall@k": 1.0,
+          "gap": 0.045
+        }
+      }
+    }
+  ]
+}

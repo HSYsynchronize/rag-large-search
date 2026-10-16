@@ -1,0 +1,130 @@
+{
+  "n": 16634,
+  "dim": 1024,
+  "n_queries": 200,
+  "k": 5,
+  "seed": 42,
+  "dup_items": 2217,
+  "engines": {
+    "IVF (nlist=166, nprobe=20)": {
+      "id_recall@k": 0.982,
+      "missed_positions": 18,
+      "counts": {
+        "A_exact_duplicate": 16,
+        "D_unexplained": 2
+      },
+      "threshold_sweep": [
+        {
+          "threshold": 0.9999,
+          "explained": 16,
+          "unexplained": 2,
+          "explained_rate": 0.8889
+        },
+        {
+          "threshold": 0.999,
+          "explained": 16,
+          "unexplained": 2,
+          "explained_rate": 0.8889
+        },
+        {
+          "threshold": 0.995,
+          "explained": 16,
+          "unexplained": 2,
+          "explained_rate": 0.8889
+        },
+        {
+          "threshold": 0.99,
+          "explained": 16,
+          "unexplained": 2,
+          "explained_rate": 0.8889
+        },
+        {
+          "threshold": 0.98,
+          "explained": 16,
+          "unexplained": 2,
+          "explained_rate": 0.8889
+        },
+        {
+          "threshold": 0.95,
+          "explained": 16,
+          "unexplained": 2,
+          "explained_rate": 0.8889
+        },
+        {
+          "threshold": 0.9,
+          "explained": 17,
+          "unexplained": 1,
+          "explained_rate": 0.9444
+        }
+      ],
+      "unexplained_samples": [
+        {
+          "query_idx": 69,
+          "missed_id": 3905,
+          "best_substitute": 11233,
+          "best_sim": 0.901395,
+          "is_exact_dup": false
+        },
+        {
+          "query_idx": 154,
+          "missed_id": 13613,
+          "best_substitute": 7005,
+          "best_sim": 0.897754,
+          "is_exact_dup": false
+        }
+      ]
+    },
+    "HNSW (M=32, efSearch=64)": {
+      "id_recall@k": 0.976,
+      "missed_positions": 24,
+      "counts": {
+        "A_exact_duplicate": 24
+      },
+      "threshold_sweep": [
+        {
+          "threshold": 0.9999,
+          "explained": 24,
+          "unexplained": 0,
+          "explained_rate": 1.0
+        },
+        {
+          "threshold": 0.999,
+          "explained": 24,
+          "unexplained": 0,
+          "explained_rate": 1.0
+        },
+        {
+          "threshold": 0.995,
+          "explained": 24,
+          "unexplained": 0,
+          "explained_rate": 1.0
+        },
+        {
+          "threshold": 0.99,
+          "explained": 24,
+          "unexplained": 0,
+          "explained_rate": 1.0
+        },
+        {
+          "threshold": 0.98,
+          "explained": 24,
+          "unexplained": 0,
+          "explained_rate": 1.0
+        },
+        {
+          "threshold": 0.95,
+          "explained": 24,
+          "unexplained": 0,
+          "explained_rate": 1.0
+        },
+        {
+          "threshold": 0.9,
+          "explained": 24,
+          "unexplained": 0,
+          "explained_rate": 1.0
+        }
+      ],
+      "unexplained_samples": []
+    }
+  }
+}

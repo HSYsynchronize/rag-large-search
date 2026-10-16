@@ -1,0 +1,53 @@
+{
+  "base_size": 2000,
+  "n_queries": 300,
+  "k": 10,
+  "seed": 42,
+  "rows": [
+    {
+      "target_rate": 0.0,
+      "actual_rate": 0.0,
+      "library_size": 2000,
+      "dup_count": 0,
+      "IVF": {
+        "id_recall@k": 0.9587,
+        "real_recall@k": 0.9587,
+        "missed_positions": 124,
+        "A_exact_duplicate": 0,
+        "D_unexplained": 124,
+        "artifact_share_of_loss": 0.0
+      },
+      "HNSW": {
+        "id_recall@k": 1.0,
+        "real_recall@k": 1.0,
+        "missed_positions": 0,
+        "A_exact_duplicate": 0,
+        "D_unexplained": 0,
+        "artifact_share_of_loss": 0.0
+      }
+    },
+    {
+      "target_rate": 0.5,
+      "actual_rate": 0.5,
+      "library_size": 4000,
+      "dup_count": 2000,
+      "IVF": {
+        "id_recall@k": 0.9747,
+        "real_recall@k": 0.9813,
+        "missed_positions": 76,
+        "A_exact_duplicate": 20,
+        "D_unexplained": 56,
+        "artifact_share_of_loss": 0.2632
+      },
+      "HNSW": {
+        "id_recall@k": 0.97,
+        "real_recall@k": 1.0,
+        "missed_positions": 90,
+        "A_exact_duplicate": 90,
+        "D_unexplained": 0,
+        "artifact_share_of_loss": 1.0
+      }
+    }
+  ],
+  "ivf_nprobe_sweep_zero_dup": []
+}
